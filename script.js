@@ -9,16 +9,22 @@ const equalKey = document.querySelector(".equal");
 const decimalKey = document.querySelector(".decimal");
 const signKey = document.querySelector(".sign");
 const carKey = document.querySelector(".car");
-const soundList = ["q", "w", "e", "r", "t", "y", "u", "i"];
+const carSounds = ["q", "w", "e", "r", "t", "y", "u", "i"];
+
 let currentValue = "";
 let lastValue = "";
 let answer = "0";
 let lastOperator = "";
 let calculating = false;
 
+function random(n) {
+  return Math.floor(Math.random() * n);
+}
+
 function roundNum(num) {
   return Math.round(num * 10 ** 10) / 10 ** 10;
 }
+
 function operate(op, a, b) {
   a = Number(a);
   b = Number(b);
@@ -31,13 +37,10 @@ function operate(op, a, b) {
     result = a / b;
   }
   result = roundNum(result);
-  if (result.toString().length > 10) return Number(result).toExponential(2);
+  if (result.toString().length > 10) return Number(result).toExponential(1);
   return result;
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-  updateScreen("", "", "", answer);
-});
 function updateScreen(num1, op, num2, ans, eq = "") {
   if (num1 === "0.") num1 = "0";
   if (num2 === "0.") num2 = "0";
@@ -45,42 +48,6 @@ function updateScreen(num1, op, num2, ans, eq = "") {
   mainScreen.textContent = `${ans}`;
 }
 
-numberKeys.forEach((numberKey) =>
-  numberKey.addEventListener("click", () => {
-    getNumber(numberKey.value);
-  })
-);
-function getNumber(number) {
-  checkError();
-  if (currentValue.length <= 9) currentValue += number;
-  updateScreen(lastValue, lastOperator, "", currentValue);
-}
-
-operatorKeys.forEach((operatorKey) =>
-  operatorKey.addEventListener("click", () => {
-    setOperation(operatorKey.textContent);
-  })
-);
-function setOperation(operator) {
-  checkError();
-  if (!calculating) {
-    if (lastValue === "" && currentValue === "") {
-      lastValue = "0";
-    } else {
-      lastValue = currentValue;
-      currentValue = "";
-    }
-    calculating = true;
-  }
-  if (calculating && currentValue !== "") {
-    lastValue = operate(lastOperator, lastValue, currentValue);
-    currentValue = "";
-  }
-  updateScreen(lastValue, operator, "", lastValue);
-  lastOperator = operator;
-}
-
-clearKey.addEventListener("click", clear);
 function clear() {
   currentValue = "";
   lastValue = "";
@@ -90,24 +57,41 @@ function clear() {
   updateScreen("", "", "", answer);
 }
 
-decimalKey.addEventListener("click", addDecimal);
-function addDecimal() {
-  if (!currentValue.toString().includes(".")) mainScreen.textContent += ".";
-  if (currentValue === "") mainScreen.textContent = "0.";
-  currentValue = mainScreen.textContent;
-}
-
-undoKey.addEventListener("click", undo);
-function undo() {
-  mainScreen.textContent = mainScreen.textContent.slice(0, -1);
-  currentValue = mainScreen.textContent;
-  if (mainScreen.textContent === "") {
-    currentValue = "";
-    mainScreen.textContent = "0";
+function checkError(result) {
+  if (result === "Undefined") {
+    clear();
+    updateScreen("You cannot divided by zero !", "", "", "");
+    playSound(carSounds[random(carSounds.length)]);
   }
 }
 
-equalKey.addEventListener("click", evaluate);
+function getNumber(number) {
+  if (currentValue === "0") currentValue = "";
+  if (topScreen.textContent.includes("=")) clear();
+  if (currentValue.length <= 9) currentValue += number;
+  updateScreen(lastValue, lastOperator, "", currentValue);
+}
+
+function setOperation(operator) {
+  if (!calculating) {
+    if (lastValue === "" && currentValue === "") {
+      lastValue = "0";
+    } else {
+      lastValue = currentValue;
+      currentValue = "";
+    }
+    calculating = true;
+  }
+  if (topScreen.textContent.includes("=")) currentValue = "";
+  if (calculating && currentValue !== "") {
+    lastValue = operate(lastValue, lastValue, currentValue);
+    currentValue = "";
+  }
+  updateScreen(lastValue, operator, "", lastValue);
+  lastOperator = operator;
+  checkError(lastValue);
+}
+
 function evaluate() {
   if (lastValue === "" && currentValue === "") return;
   if (calculating) {
@@ -116,48 +100,28 @@ function evaluate() {
     updateScreen(lastValue, lastOperator, currentValue, answer, "=");
     lastValue = answer;
   }
+  checkError(lastValue);
 }
 
-signKey.addEventListener("click", negate);
 function negate() {
   mainScreen.textContent *= -1;
   currentValue = mainScreen.textContent;
 }
 
-function checkError() {
-  if (topScreen.textContent.includes("=")) currentValue = "";
-  if (currentValue === "0") currentValue = "";
-  if (lastValue === "Undefined") lastValue = "0";
+function addDecimal() {
+  if (!currentValue.toString().includes(".")) mainScreen.textContent += ".";
+  if (currentValue === "") mainScreen.textContent = "0.";
+  currentValue = mainScreen.textContent;
 }
 
-const getButton = function (e) {
-  if (e.key !== "Enter") return findButton(e);
-  return document.querySelector(`button[value="="]`);
-};
-
-const findButton = function (e) {
-  let button = document.querySelector(`button[value="${e.key}"]`);
-  if (button === null) button = keys;
-  return button;
-};
-
-window.addEventListener("mouseup", (e) => {
-  e.target.blur();
-});
-window.addEventListener("keyup", (e) => {
-  e.target.blur();
-});
-window.addEventListener("keydown", (e) => {
-  if (e.key === "Delete") deleteValue();
-  if (getButton(e).value !== "=") getButton(e).click();
-  getButton(e).focus();
-  playSound(e.key);
-});
-
-carKey.addEventListener("click", () => {
-  let n = Math.floor(Math.random() * soundList.length);
-  playSound(soundList[n]);
-});
+function undo() {
+  mainScreen.textContent = mainScreen.textContent.slice(0, -1);
+  currentValue = mainScreen.textContent;
+  if (mainScreen.textContent === "") {
+    currentValue = "";
+    mainScreen.textContent = "0";
+  }
+}
 
 function playSound(key) {
   const sound = document.querySelector(`audio[data-key="${key}"]`);
@@ -171,3 +135,46 @@ function deleteValue() {
   currentValue = "";
   updateScreen(lastValue, lastOperator, "", "0");
 }
+
+function findKey(e) {
+  let button = document.querySelector(`button[value="${e.key}"]`);
+  if (button === null) button = keys;
+  return button;
+}
+
+function getKey(e) {
+  if (e.key !== "Enter") return findKey(e);
+  return document.querySelector(`button[value="="]`);
+}
+
+window.addEventListener("DOMContentLoaded", clear);
+numberKeys.forEach((numberKey) =>
+  numberKey.addEventListener("click", () => {
+    getNumber(numberKey.value);
+  })
+);
+operatorKeys.forEach((operatorKey) =>
+  operatorKey.addEventListener("click", () => {
+    setOperation(operatorKey.textContent);
+  })
+);
+equalKey.addEventListener("click", evaluate);
+decimalKey.addEventListener("click", addDecimal);
+undoKey.addEventListener("click", undo);
+signKey.addEventListener("click", negate);
+clearKey.addEventListener("click", clear);
+carKey.addEventListener("click", () => {
+  playSound(carSounds[random(carSounds.length)]);
+});
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Delete") deleteValue();
+  if (getKey(e).value !== "=") getKey(e).click();
+  getKey(e).focus();
+  playSound(e.key);
+});
+window.addEventListener("mouseup", (e) => {
+  e.target.blur();
+});
+window.addEventListener("keyup", (e) => {
+  e.target.blur();
+});
