@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Lobster&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
 
 @font-face {
   font-family: 'Handjet Medium';
@@ -15,6 +16,8 @@
   padding: 0;
 }
 
+.content,
+.note,
 .calculator,
 .container,
 .keys,
@@ -25,15 +28,36 @@ body {
   align-items: flex-end;
 }
 
+.display,
+.content {
+  flex-direction: column;
+}
+
+.note,
+.content,
 body {
   align-items: center;
-  height: 100vh;
 }
 
 .display,
 .calculator,
 button {
   border-radius: 5px;
+}
+
+body {
+  height: 100vh;
+}
+
+.note {
+  font-family: 'Permanent Marker';
+  font-size: 32px;
+  background-color: #fff8ac;
+  width: 360px;
+  height: 80px;
+  box-shadow: 0 1px 2px 0px #767676;
+  margin-bottom: 36px;
+  transform: rotate(-3deg)
 }
 
 .calculator {
@@ -44,7 +68,7 @@ button {
   border: 10px solid #ff9900;
   border-top: 10px solid #ffc02d;
   border-bottom: 10px solid #d47f00;
-  box-shadow: 0 3px 5px 1px #adadad;
+  box-shadow: 0 2px 5px 0px #7d7d7d;
 }
 
 .label {
@@ -64,7 +88,6 @@ button {
 }
 
 .display {
-  flex-direction: column;
   justify-content: flex-end;
   width: 270px;
   height: 105px;
@@ -73,7 +96,7 @@ button {
   font-family: 'Handjet Medium', sans-serif;
   font-size: 24px;
   text-align: right;
-  color: #333;
+  color: #242424;
   background-color: #8bc62b;
   box-shadow: 0px 2px 5px 0px inset #23232385;
   border: 6px solid #dc9224;
@@ -87,7 +110,7 @@ button {
 }
 
 button {
-  font-family: 'Oswald', sans-serif;
+  font-family: 'Oswald', 'Impact', 'Arial', sans-serif;
   font-size: 30px;
   font-weight: 500;
   color: #f1f1f1;
