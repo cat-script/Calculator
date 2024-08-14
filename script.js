@@ -60,7 +60,7 @@ function clear() {
 function checkError(result) {
   if (result === "Undefined") {
     clear();
-    updateScreen("You cannot divided by zero !", "", "", "");
+    updateScreen("You cannot divide by zero !", "", "", "");
     const splatSound = document.querySelector(".splat");
     splatSound.play();
   }
