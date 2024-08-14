@@ -50,13 +50,14 @@ body {
 
 .note {
   font-family: 'Permanent Marker';
-  font-size: 32px;
+  font-size: 30px;
+  color: #282828;
   background-color: #86f7ff;
-  width: 360px;
-  height: 70px;
+  width: 340px;
+  height: 60px;
   box-shadow: 0 1px 2px 0 #007971;
   margin-bottom: 36px;
-  transform: rotate(-3deg)
+  transform: rotate(-3deg);
 }
 
 .calculator {
@@ -67,7 +68,7 @@ body {
   border: 10px solid #ff9900;
   border-top: 10px solid #ffc02d;
   border-bottom: 10px solid #d47f00;
-  box-shadow: 0 2px 5px 0 #926100;
+  box-shadow: 0 2px 4px 0 #744d00;
 }
 
 .label {
@@ -95,9 +96,9 @@ body {
   font-family: 'Handjet Medium', sans-serif;
   font-size: 24px;
   text-align: right;
-  color: #272727;
+  color: #323232;
   background-color: #8bc62b;
-  box-shadow: 0px 2px 5px 0px inset #2d7a00;
+  box-shadow: 0 2px 5px 0 inset #2d7a00;
   border: 6px solid #dc9224;
   border-bottom: 6px solid #ffc53e;
   border-top: 6px solid #cc6e0b;
