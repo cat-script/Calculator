@@ -1,21 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Lobster&display=swap');
 
-/* @import url('https://fonts.googleapis.com/css2?family=Handjet:wght@100..900&display=swap'); */
-
 @font-face {
   font-family: 'Handjet Medium';
   src: url(./fonts/Handjet-Medium.ttf) format('truetype');
   font-weight: normal;
   font-style: normal;
-}
-
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  font-family: 'Handjet Medium', sans-serif;
-  text-align: center;
 }
 
 *,
@@ -29,10 +18,16 @@ body {
 .calculator,
 .container,
 .keys,
-.display {
+.display,
+body {
   display: flex;
   justify-content: center;
   align-items: flex-end;
+}
+
+body {
+  align-items: center;
+  height: 100vh;
 }
 
 .display,
@@ -69,17 +64,18 @@ button {
 }
 
 .display {
-  color: #333;
   flex-direction: column;
   justify-content: flex-end;
   width: 270px;
   height: 105px;
-  text-align: right;
   margin: 8px 0 15px 0;
   padding-right: 15px;
+  font-family: 'Handjet Medium', sans-serif;
   font-size: 24px;
-  background-color: #73aa5d;
-  box-shadow: 0px 1px 6px 0px inset #23232385;
+  text-align: right;
+  color: #333;
+  background-color: #8bc62b;
+  box-shadow: 0px 2px 5px 0px inset #23232385;
   border: 6px solid #dc9224;
   border-bottom: 6px solid #ffc53e;
   border-top: 6px solid #cc6e0b;
@@ -91,10 +87,10 @@ button {
 }
 
 button {
-  font-weight: 500;
   font-family: 'Oswald', sans-serif;
-  color: #f1f1f1;
   font-size: 30px;
+  font-weight: 500;
+  color: #f1f1f1;
   width: 60px;
   height: 60px;
   cursor: pointer;
@@ -104,7 +100,7 @@ button {
 button:focus,
 button:active {
   outline: none;
-  transition: all .05s;
+  transition: all .05s ease-in-out;
   transform: translateY(1px);
   box-shadow: 0 0 2px 0px #23232385;
 }
@@ -155,6 +151,7 @@ button:active {
 }
 
 .white {
+  text-shadow: 1px 1px 1px #858585;
   padding-bottom: 10px;
   line-height: 0%;
   font-size: 36px;
@@ -162,7 +159,6 @@ button:active {
   border: 6px solid #e6e6e6;
   border-top: 6px solid #ffffff;
   border-bottom: 6px solid #d6d6d6;
-  text-shadow: 1px 1px 1px #858585;
 }
 
 .white:active,
