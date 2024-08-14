@@ -61,7 +61,8 @@ function checkError(result) {
   if (result === "Undefined") {
     clear();
     updateScreen("You cannot divided by zero !", "", "", "");
-    playSound(carSounds[random(carSounds.length)]);
+    const splatSound = document.querySelector(".splat");
+    splatSound.play();
   }
 }
 
@@ -84,7 +85,7 @@ function setOperation(operator) {
   }
   if (topScreen.textContent.includes("=")) currentValue = "";
   if (calculating && currentValue !== "") {
-    lastValue = operate(lastValue, lastValue, currentValue);
+    lastValue = operate(lastOperator, lastValue, currentValue);
     currentValue = "";
   }
   updateScreen(lastValue, operator, "", lastValue);
